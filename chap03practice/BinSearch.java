@@ -7,20 +7,84 @@ public class BinSearch {
 	static int binSearch(int[] a, int n, int key) {
         
 		int i=0;
-        // 헤더 출력
+		int leftIdx = 0;
+		int rightIdx = a.length - 1;
+		int centerIdx = (leftIdx + rightIdx) / 2;
+		boolean match = false;
+		
+		// 헤더 출력
         System.out.print("   |");
-        for (i=0; i<a.length; i++)
-        {
+        for (i=0; i<a.length; i++) {
         	System.out.printf("%2d", i);
         }
         System.out.println();
         System.out.print("---+");
-        for (i=0; i<a.length; i++)
-        {
+        for (i=0; i<a.length; i++) {
         	System.out.print("--");
         }
         System.out.print("\n");
+
+        while (centerIdx > 0 && leftIdx != centerIdx && rightIdx != centerIdx)
+        {
+        	// 라인1
+        	System.out.print("   |");
+        	for (int j=0; j<a.length; j++) {
+        		
+        		if (j == leftIdx) 
+        			System.out.print("<-");
+        		else if (j == centerIdx)
+        			System.out.printf("%2s", "+");
+        		else if (j == rightIdx)
+        			System.out.print("->");
+        		else 
+        			System.out.print("  ");
+        	}
+        	System.out.print("\n");
+        	
+            // 라인2        	
+        	System.out.printf("%3d", centerIdx);
+        	System.out.print("|");
+        	for (int k=0; k<a.length; k++) {
+        		System.out.printf("%2d", a[k]);
+        	}
+        	System.out.print("\n");
+
+        	// 라인3
+        	System.out.print("   |");
+        	System.out.print("\n");   
+        	
+        	// 검색 성공
+            if (a[centerIdx] == key)   
+            {
+            	match = true;
+                break;
+            }
+            else {
+            	
+            	if (a[centerIdx] < key) {
+            		rightIdx = centerIdx;
+            		centerIdx = (leftIdx + rightIdx) / 2;
+            	}
+            	else if (a[centerIdx] > key)
+            	{
+            		leftIdx = centerIdx;
+            		centerIdx =  (leftIdx + rightIdx) / 2;            		
+            	}
+            		
+            }
+            
+        }
         
+        // 같은 요소가 있는지 체크 후 가장 앞의 요소를 반환
+        while(centerIdx > 0 && a[centerIdx] == a[centerIdx-1])
+        {
+        	centerIdx = centerIdx-1;
+        }
+        
+        if (match) System.out.print(a[centerIdx] + "[" + centerIdx + "]를 찾았습니다.");
+        else System.out.print(a[centerIdx] + "검색에 실패했습니다.");
+        
+        return a[centerIdx];
 	}
 	
     public static void main(String[] args) {
@@ -48,6 +112,8 @@ public class BinSearch {
 //        int[] idx = new int[num + 1];   
 //        var size = searchIdx(x, num, ky, idx); 
 //        System.out.println("일치값 " + size + "개");
+        
+        binSearch(x, num, ky);
     }
     
 }
